@@ -1,414 +1,366 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Surprise for Nini</title>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --pink:#ffe6f0;
-      --rose:#d63384;
-      --rose-2:#e04c96;
-      --gray:#6c757d;
-      --shadow:0 10px 28px rgba(0,0,0,.18);
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Surprise for Nini</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink:#ffe6f0;
+    --rose:#d63384;
+    --rose-2:#e04c96;
+    --gray:#6c757d;
+    --shadow:0 10px 28px rgba(0,0,0,.18);
+  }
+  html,body{height:100%}
+  body{
+    margin:0;
+    min-height:100svh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--pink);
+    font-family:'Quicksand',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    -webkit-tap-highlight-color:transparent;
+    user-select:none;
+    overflow:hidden;
+    position:relative;
+    text-align:center;
+  }
+  .bg-heart{
+    position:fixed;
+    bottom:-50px;
+    color:rgba(255,0,102,.14);
+    font-size:20px;
+    animation:floatBg 12s linear infinite;
+    z-index:0;
+    pointer-events:none;
+  }
+  @keyframes floatBg{
+    from{transform:translateY(0) scale(1);opacity:1}
+    to{transform:translateY(-120vh) scale(1.8);opacity:0}
+  }
+  .container{
+    position:relative;
+    display:inline-block;
+    max-width:520px;
+    padding:28px 24px 26px;
+    border-radius:22px;
+    background:#fff;
+    box-shadow:var(--shadow);
+    z-index:5;
+    text-align:center;
+  }
+  .sticker-fixed{
+    position:absolute;
+    top:-18px;
+    left:-18px;
+    width:80px;
+    height:80px;
+    object-fit:cover;
+    border-radius:16px;
+    pointer-events:none;
+    z-index:10;
+  }
+  .hidden{display:none}
+  #promptText{
+    margin:10px 0 6px;
+    color:var(--rose);
+    font-family:'Dancing Script',cursive;
+    font-size:1.8rem;
+    line-height:1.2;
+    transition:opacity .35s ease;
+  }
+  .buttons{
+    position:relative;
+    display:flex;
+    gap:12px;
+    justify-content:center;
+    align-items:center;
+    min-height:56px;
+    margin-top:8px;
+  }
+  .btn{
+    position:relative;
+    display:inline-block;
+    padding:14px 28px;
+    border:0;
+    border-radius:999px;
+    background:var(--rose);
+    color:#fff;
+    font-weight:700;
+    font-size:1.05rem;
+    cursor:pointer;
+    transition:transform .22s ease, box-shadow .22s ease, background .22s ease;
+    box-shadow:0 8px 20px rgba(214,51,132,.35);
+    will-change:transform;
+  }
+  .btn:hover{ transform:translateY(-2px) scale(1.04); box-shadow:0 12px 26px rgba(214,51,132,.45); background:var(--rose-2);}
+  .btn:active{ transform:scale(.96); }
+  .btn.secondary{ background:var(--gray); box-shadow:0 8px 20px rgba(108,117,125,.28);}
+  .btn.secondary:hover{ background:#868e96; }
 
-    /* Page centering */
-    html,body{height:100%}
-    body{
-      margin:0;
-      min-height:100svh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:var(--pink);
-      font-family:'Quicksand',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      -webkit-tap-highlight-color:transparent;
-      user-select:none;
-      overflow:hidden;
-      position:relative;
-      text-align:center;
-    }
+  .clicked{ animation:bounce .28s; }
+  @keyframes bounce{
+    0%{transform:scale(.95)}
+    50%{transform:scale(1.1)}
+    100%{transform:scale(1)}
+  }
+  .wiggle{ animation:wiggle .4s ease; }
+  @keyframes wiggle{
+    0%{transform:translateX(0)}
+    25%{transform:translateX(-8px) rotate(-2deg)}
+    50%{transform:translateX(8px) rotate(2deg)}
+    75%{transform:translateX(-4px) rotate(-1deg)}
+    100%{transform:translateX(0)}
+  }
 
-    /* Floating background hearts */
-    .bg-heart{
-      position:fixed;
-      bottom:-50px;
-      color:rgba(255,0,102,.14);
-      font-size:20px;
-      animation:floatBg 12s linear infinite;
-      z-index:0;
-      pointer-events:none;
-    }
-    @keyframes floatBg{
-      from{transform:translateY(0) scale(1);opacity:1}
-      to{transform:translateY(-120vh) scale(1.8);opacity:0}
-    }
+  .envelope{
+    width:260px;height:170px;
+    position:relative;
+    margin:18px auto 6px;
+    background:#ff4e50;
+    border-radius:10px;
+    box-shadow:0 10px 20px rgba(0,0,0,.22);
+    overflow:hidden;
+    animation:gBounce 3s ease-in-out infinite;
+    cursor:pointer;
+  }
+  @keyframes gBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  .envelope::before{
+    content:"";
+    position:absolute;top:0;left:0;
+    border-left:130px solid transparent;
+    border-right:130px solid transparent;
+    border-bottom:85px solid #ff7676;
+  }
+  .envelope::after{
+    content:"";
+    position:absolute;inset:auto 0 0 0;height:42%;
+    background:linear-gradient(to top, rgba(255,255,255,.2), rgba(255,255,255,0));
+  }
+  .seal{
+    position:absolute;top:58px;left:50%;
+    transform:translateX(-50%);
+    width:54px;height:54px;border-radius:50%;
+    background:#ff1744;color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;
+    box-shadow:0 6px 14px rgba(0,0,0,.25);
+    animation:pulse 1.6s infinite;
+  }
+  @keyframes pulse{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.15)}}
 
-    /* Adaptive centered box */
-    .container{
-      position:relative;
-      display:inline-block;            /* auto-size to content */
-      max-width:520px;
-      padding:28px 24px 26px;
-      border-radius:22px;
-      background:#fff;
-      box-shadow:var(--shadow);
-      z-index:5;
-      text-align:center;
-    }
+  .letter-wrap{
+    overflow:hidden;
+    border-radius:14px;
+    box-shadow:0 10px 24px rgba(0,0,0,.2);
+    transform-origin:top;
+    transform:scaleY(0);
+    transition:transform .8s ease;
+    position:relative;
+    background:#fff;
+    margin-top:10px;
+  }
+  .letter-wrap.open{ transform:scaleY(1); }
+  .sticker-letter{
+    position:absolute;
+    top:-15px;
+    right:-15px;
+    width:80px;
+    height:80px;
+    object-fit:cover;
+    border-radius:16px;
+    pointer-events:none;
+    z-index:2;
+  }
+  .letter-content{
+    padding:22px 20px;
+    opacity:0; transition:opacity 1s ease .15s;
+    color:var(--rose);
+    font-family:'Dancing Script',cursive;
+    font-size:1.7rem; line-height:1.7;
+  }
+  .letter-content.show{ opacity:1; }
+  .sticker-inline{
+    display:inline-block;
+    width:56px;
+    height:56px;
+    object-fit:cover;
+    border-radius:12px;
+    vertical-align:middle;
+    margin-left:10px;
+  }
+  #restartBtn{
+    margin:16px auto 2px;
+    display:block;
+    background:#ffb6d9; color:var(--rose);
+    font-weight:700; font-size:1rem;
+    padding:12px 26px; border-radius:999px; border:0;
+    box-shadow:0 8px 18px rgba(255,182,217,.55);
+    transition:transform .22s ease, box-shadow .22s ease, background .22s ease;
+  }
+  #restartBtn:hover{ transform:translateY(-2px) scale(1.06); background:#ffc7e1; box-shadow:0 12px 24px rgba(255,182,217,.65); }
+  #restartBtn:active{ transform:scale(.95); }
 
-    /* Fixed sticker (always visible) */
-    .sticker-fixed{
-       position:absolute;
-         top:-18px;
-          left:-18px;
-          width:80px;
-          height:80px;
-          object-fit:cover;
-          border-radius:16px; /* optional: rounder look */
-          pointer-events:none;
-          z-index:10;
-    }
+  @media (prefers-reduced-motion:reduce){*{animation:none !important; transition:none !important}}
 
-    .hidden{display:none}
+  /* Mobile */
+  @media (max-width:480px){
+    .container{max-width:90%;padding:20px 16px;}
+    .envelope{width:200px;height:130px;}
+    .envelope::before{border-left:100px solid transparent; border-right:100px solid transparent; border-bottom:65px solid #ff7676;}
+    .seal{width:44px;height:44px;font-size:1rem;top:45px;}
+    #promptText{font-size:1.4rem;}
+    .btn{padding:12px 20px;font-size:0.95rem;}
+    .sticker-fixed,.sticker-letter{width:60px;height:60px;}
+    .letter-content{font-size:1.2rem;line-height:1.5;padding:16px 14px;}
+    #restartBtn{font-size:0.9rem;padding:10px 20px;}
+  }
 
-    /* Prompt text */
-    #promptText{
-      margin:10px 0 6px;
-      color:var(--rose);
-      font-family:'Dancing Script',cursive;
-      font-size:1.8rem;
-      line-height:1.2;
-      transition:opacity .35s ease;
-    }
-
-    /* Buttons row (so runaway stays inside) */
-    .buttons{
-      position:relative;
-      display:flex;
-      gap:12px;
-      justify-content:center;
-      align-items:center;
-      min-height:56px; /* room for runaway button */
-      margin-top:8px;
-    }
-
-    /* Buttons */
-    .btn{
-      position:relative;
-      display:inline-block;
-      padding:14px 28px;
-      border:0;
-      border-radius:999px;
-      background:var(--rose);
-      color:#fff;
-      font-weight:700;
-      font-size:1.05rem;
-      cursor:pointer;
-      transition:transform .22s ease, box-shadow .22s ease, background .22s ease;
-      box-shadow:0 8px 20px rgba(214,51,132,.35);
-      will-change:transform;
-    }
-    .btn:hover{ transform:translateY(-2px) scale(1.04); box-shadow:0 12px 26px rgba(214,51,132,.45); background:var(--rose-2);}
-    .btn:active{ transform:scale(.96); }
-    .btn.secondary{ background:var(--gray); box-shadow:0 8px 20px rgba(108,117,125,.28);}
-    .btn.secondary:hover{ background:#868e96; }
-
-    .clicked{ animation:bounce .28s; }
-    @keyframes bounce{
-      0%{transform:scale(.95)}
-      50%{transform:scale(1.1)}
-      100%{transform:scale(1)}
-    }
-    .wiggle{ animation:wiggle .4s ease; }
-    @keyframes wiggle{
-      0%{transform:translateX(0)}
-      25%{transform:translateX(-8px) rotate(-2deg)}
-      50%{transform:translateX(8px) rotate(2deg)}
-      75%{transform:translateX(-4px) rotate(-1deg)}
-      100%{transform:translateX(0)}
-    }
-
-    /* Envelope (bigger, bouncy) */
-    .envelope{
-      width:260px;height:170px;
-      position:relative;
-      margin:18px auto 6px;
-      background:#ff4e50;
-      border-radius:10px;
-      box-shadow:0 10px 20px rgba(0,0,0,.22);
-      overflow:hidden;
-      animation:gBounce 3s ease-in-out infinite;
-      cursor:pointer;
-    }
-    @keyframes gBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-    .envelope::before{
-      content:"";
-      position:absolute;top:0;left:0;
-      border-left:130px solid transparent;
-      border-right:130px solid transparent;
-      border-bottom:85px solid #ff7676;
-    }
-    .envelope::after{
-      content:"";
-      position:absolute;inset:auto 0 0 0;height:42%;
-      background:linear-gradient(to top, rgba(255,255,255,.2), rgba(255,255,255,0));
-    }
-    .seal{
-      position:absolute;top:58px;left:50%;
-      transform:translateX(-50%);
-      width:54px;height:54px;border-radius:50%;
-      background:#ff1744;color:#fff;
-      display:flex;align-items:center;justify-content:center;
-      font-weight:700;
-      box-shadow:0 6px 14px rgba(0,0,0,.25);
-      animation:pulse 1.6s infinite;
-    }
-    @keyframes pulse{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.15)}}
-
-    /* Letter open animation */
-    .letter-wrap{
-      overflow:hidden;
-      border-radius:14px;
-      box-shadow:0 10px 24px rgba(0,0,0,.2);
-      transform-origin:top;
-      transform:scaleY(0);
-      transition:transform .8s ease;
-      position:relative;
-      background:#fff;
-      margin-top:10px;
-    }
-    .letter-wrap.open{ transform:scaleY(1); }
-
-    .sticker-letter{
-       position:absolute;
-  top:-15px;
-  right:-15px;
-  width:80px;
-  height:80px;
-  object-fit:cover;
-  border-radius:16px;
-  pointer-events:none;
-  z-index:2;
-    }
-
-    .letter-content{
-      padding:22px 20px;
-      opacity:0; transition:opacity 1s ease .15s;
-      color:var(--rose);
-      font-family:'Dancing Script',cursive;
-      font-size:1.7rem; line-height:1.7;
-    }
-    .letter-content.show{ opacity:1; }
-
-    /* No-answer inline sticker */
-    .sticker-inline{
-      display:inline-block;
-  width:56px;
-  height:56px;
-  object-fit:cover;
-  border-radius:12px;
-  vertical-align:middle;
-  margin-left:10px;
-    }
-
-    /* Restart button */
-    #restartBtn{
-      margin:16px auto 2px;
-      display:block;
-      background:#ffb6d9; color:var(--rose);
-      font-weight:700; font-size:1rem;
-      padding:12px 26px; border-radius:999px; border:0;
-      box-shadow:0 8px 18px rgba(255,182,217,.55);
-      transition:transform .22s ease, box-shadow .22s ease, background .22s ease;
-    }
-    #restartBtn:hover{ transform:translateY(-2px) scale(1.06); background:#ffc7e1; box-shadow:0 12px 24px rgba(255,182,217,.65); }
-    #restartBtn:active{ transform:scale(.95); }
-
-    /* Reduce motion accessibility */
-    @media (prefers-reduced-motion:reduce){
-      *{animation:none !important; transition:none !important}
-    }
-  </style>
+  /* Smooth runaway */
+  .btn.runaway{
+    position: fixed !important;
+    transition: left 0.25s ease, top 0.25s ease, transform 0.15s ease;
+    z-index:9999;
+  }
+</style>
 </head>
 <body>
-  <!-- Background hearts (a few seeded; more added via JS) -->
-  <div class="bg-heart" style="left:12%;">♥</div>
-  <div class="bg-heart" style="left:38%;animation-delay:2s;">♥</div>
-  <div class="bg-heart" style="left:64%;animation-delay:4s;">♥</div>
-  <div class="bg-heart" style="left:82%;animation-delay:6s;">♥</div>
+<div class="bg-heart" style="left:12%;">♥</div>
+<div class="bg-heart" style="left:38%;animation-delay:2s;">♥</div>
+<div class="bg-heart" style="left:64%;animation-delay:4s;">♥</div>
+<div class="bg-heart" style="left:82%;animation-delay:6s;">♥</div>
 
-  <div class="container" id="container">
+<div class="container" id="container">
+  <section id="promptBox">
+    <div class="envelope" aria-label="Envelope preview">
+      <div class="seal">♡</div>
+    </div>
+    <h2 id="promptText">I have a surprise for youuu. Please open it >.< </h2>
+    <div class="buttons" id="buttons">
+      <button class="btn" id="yesBtn" type="button">Yes</button>
+      <button class="btn secondary" id="noBtn" type="button">No</button>
+    </div>
+  </section>
 
-    <!-- Stage: Prompt -->
-    <section id="promptBox">
-      <div class="envelope" aria-label="Envelope preview">
-        <div class="seal">♡</div>
+  <section id="envelopeBox" class="hidden">
+    <div class="envelope" id="tapEnvelope" role="button" tabindex="0" aria-label="Tap to open letter">
+      <div class="seal">♡</div>
+    </div>
+    <p style="color:var(--rose);margin:8px 0 2px;">Tap the envelope for surprise.</p>
+  </section>
+
+  <section id="letterStage" class="hidden">
+    <div class="letter-wrap" id="letterWrap">
+      <img src="stickers/letter-corner.png" alt="" class="sticker-letter">
+      <div class="letter-content" id="letterContent">
+        Happy 1 Month of Knowing You <br><br>
+        It's already been a month since we've started talking to each other. Everyday with you has been such a blessing.
+        I dont know why I did thisT^T but I wanted to give you something special for being such a wonderful person in my life.Ill keep this short cuz Im not very good at making letters so please appreciate thisT^T. 
+        Im so excited for our future and also super excited to see you>.< 
+        Im grateful for having you in my life and youre always be my babyyy, I hope that you know that. 
+        <br><br>
+        Sincerely yours, your loml:>.
       </div>
-      <h2 id="promptText">I have a surprise for youuu. Please open it >.< </h2>
+    </div>
+    <button id="restartBtn" class="hidden" type="button">Again?</button>
+  </section>
+</div>
 
-      <div class="buttons" id="buttons">
-        <button class="btn" id="yesBtn" type="button">Yes</button>
-        <button class="btn secondary" id="noBtn" type="button">No</button>
-      </div>
-    </section>
+<script>
+let attempts=0;
+const messages=["Are you sureeee?","Please! Please! Please!T^T","You can’t say no forever...","Do you hate me?T^T"];
+const promptText=document.getElementById('promptText');
+const yesBtn=document.getElementById('yesBtn');
+const noBtn=document.getElementById('noBtn');
+const buttonsRow=document.getElementById('buttons');
+const promptBox=document.getElementById('promptBox');
+const envelopeBox=document.getElementById('envelopeBox');
+const tapEnvelope=document.getElementById('tapEnvelope');
+const letterStage=document.getElementById('letterStage');
+const letterWrap=document.getElementById('letterWrap');
+const letterContent=document.getElementById('letterContent');
+const restartBtn=document.getElementById('restartBtn');
+const container=document.getElementById('container');
 
-    <!-- Stage: Envelope tap -->
-    <section id="envelopeBox" class="hidden">
-      <div class="envelope" id="tapEnvelope" role="button" tabindex="0" aria-label="Tap to open letter">
-        <div class="seal">♡</div>
-      </div>
-      <p style="color:var(--rose);margin:8px 0 2px;">Tap the envelope for surprise.</p>
-    </section>
+let btnBusy=false;
+function handleBtnClick(el,action){if(btnBusy)return;btnBusy=true;el.classList.add('clicked');setTimeout(()=>{el.classList.remove('clicked');btnBusy=false},220);action();}
 
-    <!-- Stage: Letter open -->
-    <section id="letterStage" class="hidden">
-      <div class="letter-wrap" id="letterWrap">
-        <img src="stickers/letter-corner.png" alt="" class="sticker-letter">
-        <div class="letter-content" id="letterContent">
-          Happy 1 Month of Knowing You <br><br>
-          It's already been a month since we've started talking to each other. Everyday with you has been such a blessing.
-          I dont know why I did thisT^T but I wanted to give you something special for being such a wonderful person in my life.Ill keep this short cuz Im not very good at making letters so please appreciate thisT^T. 
-          Im so excited for our future and also super excited to see you>.< 
-          Im grateful for having you in my life and youre always be my babyyy, I hope that you know that. 
-          <br><br>
-          Sincerely yours, your loml:>.
-        </div>
-      </div>
-      <button id="restartBtn" class="hidden" type="button">Again?</button>
-    </section>
-  </div>
-
-  <script>
-    // State
-    let attempts = 0;
-    const messages = [
-      "Are you sureeee?",
-      "Please! Please! Please!T^T",
-      "You can’t say no forever...",
-      "Do you hate me?T^T",
-    ];
-
-    // Elements
-    const promptBox = document.getElementById('promptBox');
-    const promptText = document.getElementById('promptText');
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn = document.getElementById('noBtn');
-    const buttonsRow = document.getElementById('buttons');
-
-    const envelopeBox = document.getElementById('envelopeBox');
-    const tapEnvelope = document.getElementById('tapEnvelope');
-
-    const letterStage = document.getElementById('letterStage');
-    const letterWrap = document.getElementById('letterWrap');
-    const letterContent = document.getElementById('letterContent');
-    const restartBtn = document.getElementById('restartBtn');
-    const container = document.getElementById('container');
-
-    // Smooth button handler with tiny debounce
-    let btnBusy = false;
-    function handleBtnClick(el, action){
-      if(btnBusy) return;
-      btnBusy = true;
-      el.classList.add('clicked');
-      setTimeout(()=>{ el.classList.remove('clicked'); btnBusy = false; }, 220);
-      action();
+function askAgain(){
+  attempts++;
+  promptText.style.opacity='0';
+  setTimeout(()=>{
+    if(attempts<4){
+      const msg=messages[Math.floor(Math.random()*messages.length)];
+      const idx=Math.floor(Math.random()*3)+1;
+      promptText.innerHTML=`${msg} <img src="stickers/no-${idx}.png" class="sticker-inline" alt="">`;
+      noBtn.classList.add('wiggle');
+      setTimeout(()=>noBtn.classList.remove('wiggle'),420);
+      noBtn.style.position='relative';
+      noBtn.classList.remove('runaway');
+    }else{
+      promptText.innerHTML=`Last chance!... <img src="stickers/no-1.png" class="sticker-inline" alt="">`;
+      noBtn.classList.add('runaway');
+      noBtn.addEventListener('mousemove',moveNoOutsideContainer);
     }
+    promptText.style.opacity='1';
+  },280);
+}
 
-    // No button behaviors
-    function askAgain(){
-      attempts++;
-      promptText.style.opacity = '0';
+function moveNoOutsideContainer(){
+  const w=noBtn.offsetWidth;
+  const h=noBtn.offsetHeight;
+  const pad=6;
+  let x,y;
+  if(window.innerWidth<=480){ // mobile: smaller movement range
+    x=Math.random()*(window.innerWidth-80)+pad;
+    y=Math.random()*(window.innerHeight-80)+pad;
+  }else{
+    x=Math.random()*(window.innerWidth-w-pad*2)+pad;
+    y=Math.random()*(window.innerHeight-h-pad*2)+pad;
+  }
+  noBtn.style.left=x+'px';
+  noBtn.style.top=y+'px';
+  noBtn.style.transform='translateY(-15px)';
+  setTimeout(()=>noBtn.style.transform='translateY(0)',150);
+}
 
-      setTimeout(()=>{
-        if(attempts < 4){
-          const msg = messages[Math.floor(Math.random()*messages.length)];
-          const idx = Math.floor(Math.random()*3)+1; // 1..3
-          promptText.innerHTML = `${msg} <img src="stickers/no-${idx}.png" class="sticker-inline" alt="">`;
-          noBtn.classList.add('wiggle');
-          setTimeout(()=>noBtn.classList.remove('wiggle'), 420);
-        }else{
-          // Activate runaway behavior within the buttons row
-          promptText.innerHTML = `Last chance!... <img src="stickers/no-1.png" class="sticker-inline" alt="">`;
-          buttonsRow.style.minHeight = '72px';
-          buttonsRow.style.position = 'relative';
-          noBtn.style.position = 'absolute';
-          noBtn.addEventListener('mousemove', moveNoInsideContainer);
-        }
-        promptText.style.opacity = '1';
-      }, 280);
-    }
+function showEnvelope(){promptBox.classList.add('hidden');envelopeBox.classList.remove('hidden');}
+function openLetter(){envelopeBox.classList.add('hidden');letterStage.classList.remove('hidden');setTimeout(()=>letterWrap.classList.add('open'),50);setTimeout(()=>{letterContent.classList.add('show');restartBtn.classList.remove('hidden');},800);startLetterHearts();}
+function restart(){location.reload();}
 
-    function moveNoInsideContainer(){
-      const area = buttonsRow.getBoundingClientRect();
-      const w = noBtn.offsetWidth, h = noBtn.offsetHeight;
-      const pad = 6;
-      const x = Math.random() * (area.width - w - pad*2) + pad;
-      const y = Math.random() * (Math.max(area.height, 72) - h - pad*2) + pad;
-      noBtn.style.left = `${x}px`;
-      noBtn.style.top  = `${y}px`;
-    }
+yesBtn.addEventListener('click',e=>handleBtnClick(e.currentTarget,showEnvelope));
+noBtn.addEventListener('click',e=>handleBtnClick(e.currentTarget,askAgain));
+tapEnvelope.addEventListener('click',()=>openLetter());
+tapEnvelope.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')openLetter();});
+restartBtn.addEventListener('click',e=>handleBtnClick(e.currentTarget,restart));
 
-    // Stage transitions
-    function showEnvelope(){
-      promptBox.classList.add('hidden');
-      envelopeBox.classList.remove('hidden');
-    }
+setInterval(()=>{
+  const h=document.createElement('div');
+  h.className='bg-heart';
+  h.textContent='♥';
+  h.style.left=(Math.random()*100)+'vw';
+  h.style.fontSize=(12+Math.random()*22)+'px';
+  h.style.animationDuration=(9+Math.random()*6)+'s';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),14000);
+},1000);
 
-    function openLetter(){
-      envelopeBox.classList.add('hidden');
-      letterStage.classList.remove('hidden');
-      // Animate letter opening
-      setTimeout(()=> letterWrap.classList.add('open'), 50);
-      setTimeout(()=>{
-        letterContent.classList.add('show');
-        restartBtn.classList.remove('hidden');
-      }, 800);
-      // Spawn celebratory floating hearts
-      startLetterHearts();
-    }
-
-    function restart(){
-      // Full reset (simple & reliable)
-      location.reload();
-    }
-
-    // Listeners
-    yesBtn.addEventListener('click', (e)=>handleBtnClick(e.currentTarget, showEnvelope));
-    noBtn.addEventListener('click', (e)=>handleBtnClick(e.currentTarget, askAgain));
-    tapEnvelope.addEventListener('click', ()=>openLetter());
-    tapEnvelope.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') openLetter(); });
-    restartBtn.addEventListener('click', (e)=>handleBtnClick(e.currentTarget, restart));
-
-    // Background hearts generator
-    setInterval(()=>{
-      const h = document.createElement('div');
-      h.className = 'bg-heart';
-      h.textContent = '♥';
-      h.style.left = (Math.random()*100)+'vw';
-      h.style.fontSize = (12 + Math.random()*22) + 'px';
-      h.style.animationDuration = (9 + Math.random()*6) + 's';
-      document.body.appendChild(h);
-      setTimeout(()=>h.remove(), 14000);
-    }, 1000);
-
-    // Floating hearts during letter stage
-    function startLetterHearts(){
-      const timer = setInterval(()=>{
-        const h = document.createElement('div');
-        h.className = 'bg-heart';
-        h.textContent = '♥';
-        h.style.left = (container.getBoundingClientRect().left + Math.random()*container.offsetWidth) + 'px';
-        h.style.fontSize = (18 + Math.random()*28) + 'px';
-        h.style.color = 'rgba(255,0,102,.6)';
-        document.body.appendChild(h);
-        setTimeout(()=>h.remove(), 12000);
-      }, 650);
-      // stop after some time
-      setTimeout(()=>clearInterval(timer), 8000);
-    }
-  </script>
+function startLetterHearts(){
+  const timer=setInterval(()=>{
+    const h=document.createElement('div');
+    h.className='bg-heart';
+    h.textContent='♥';
+    h.style.left=(container.getBoundingClientRect().left+Math.random()*container.offsetWidth)+'px';
+    h.style.fontSize=(18+Math.random()*28)+'px';
+    h.style.color='rgba(255,0,102,.6)';
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),12000);
+  },650);
+  setTimeout(()=>clearInterval(timer),8000);
+}
+</script>
 </body>
 </html>
